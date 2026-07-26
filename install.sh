@@ -9,9 +9,10 @@ DEST=/data/heatpump-novolto
 
 echo ">> Kopiere nach $DEST"
 mkdir -p "$DEST"
-cp -r "$SRC/heatpump-novolto.py" "$SRC/service" "$DEST/"
+cp -r "$SRC/heatpump-novolto.py" "$SRC/uninstall.sh" "$SRC/service" "$DEST/"
 [ -f "$DEST/config.ini" ] || cp "$SRC/config.ini" "$DEST/"
-chmod 755 "$DEST/heatpump-novolto.py" "$DEST/service/run" "$DEST/service/log/run"
+chmod 755 "$DEST/heatpump-novolto.py" "$DEST/uninstall.sh" \
+    "$DEST/service/run" "$DEST/service/log/run"
 # config.ini enthaelt ggf. ein Klartext-MQTT-Passwort -- nicht world-readable
 chmod 600 "$DEST/config.ini"
 
@@ -35,3 +36,4 @@ echo "   (config.ini.example im Projektordner als Vorlage nehmen, falls"
 echo "   noch keine config.ini existiert)"
 echo "   Start/Neustart:  svc -t /service/heatpump-novolto"
 echo "   Log:             tail -f /var/log/heatpump-novolto/current | tai64nlocal"
+echo "   Deinstallieren:  sh $DEST/uninstall.sh"

@@ -48,9 +48,18 @@ Feldnutzung (vollstaendige Referenz: NOVOLTO-MQTT.md):
 
 Registriert:
   - com.victronenergy.heatpump.novolto (+ native Heatpump-Pfade UND
-    SwitchableOutput 0-3: Ein/Aus, Leistung, Max. Temperatur, Hysterese)
+    SwitchableOutput 0-3: Ein/Aus, Leistung, Max. Temperatur, Hysterese,
+    Switch-Pane-Gruppe "Novolto Heatpump")
   - com.victronenergy.temperature.novolto (optional)
   - com.victronenergy.temperature.novolto2 (optional, avt1)
+
+WICHTIG bei parallelem Betrieb neben dbus-novolto: Switch-Pane-Gruppe
+("Novolto Heatpump" statt "Novolto") und Default-Geraetename ("Novolto
+Heatpump BETA" statt "Novolto Heizstab") muessen sich unterscheiden --
+Venus OS gruppiert Switch-Pane-Eintraege serviceuebergreifend nach dem
+Group-String, sonst mischen sich die Controls beider Installationen
+optisch. Ebenso MQTT-Client-ID und DATA_DIR/Log-Pfad/Servicename
+(heatpump-novolto vs. dbus-novolto) muessen eigenstaendig bleiben.
 """
 
 import sys
