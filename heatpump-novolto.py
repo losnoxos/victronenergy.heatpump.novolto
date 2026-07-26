@@ -1,12 +1,16 @@
 #!/usr/bin/env python3
 """
-heatpump-novolto v0.1.0-beta
+heatpump-novolto v1.0.0-beta
 =============================
 EXPERIMENTELLER Fork von dbus-novolto (siehe dort fuer die stabile
 Version). Registriert den Novolto als com.victronenergy.heatpump.novolto
 statt com.victronenergy.acload.novolto -- der native "Heatpump"-
 Geraetetyp, den Venus OS seit ca. V3.80-Beta kennt (Pendant zu
 com.victronenergy.evcharger fuer Wallboxen wie den Warp3).
+
+Das "-beta"-Suffix bleibt bestehen, solange Venus OS selbst den
+Geraetetyp als "under development" fuehrt -- 1.0.0 heisst hier "erster
+durchgetesteter, dokumentierter Stand", nicht "produktionsreif".
 
 WICHTIG: Laut Victrons eigenem dbus-Wiki ist dieser Geraetetyp "under
 development" -- insbesondere das /State-Enum ist noch NICHT final
@@ -20,6 +24,17 @@ in der stabilen Version erhalten -- die neuen Heatpump-Pfade
 (/Temperature, /TargetTemperature, /Ac/Power, /Ac/Energy/Forward,
 /Position, /State) kommen zusaetzlich auf denselben Service, rein zum
 Testen, ob/wie Venus OS Beta das nativ anzeigt.
+
+Aenderungen:
+  v1.0.0-beta  Erster komplett durchgetesteter Stand: eigene MQTT-
+        Client-ID/Log-Pfad/Switch-Pane-Gruppe/Default-Name (kein
+        Ueberschneiden mehr mit der stabilen Installation beim
+        Parallelbetrieb), config.ini-Autoprovisionierung im Deploy-
+        Skript, uninstall.sh, Log-Sichtbarkeit bei Verbindungsverlust
+        zum Novolto (je eine Zeile beim Verlust/Wiederkommen, keine
+        Wiederholung). Testergebnis: Heatpump-Typ zeigt auf der
+        getesteten Beta noch keine eigene GUI-Darstellung, siehe
+        README.
 
 Der Novolto publiziert ein JSON-Telegramm auf <serial>/info, z.B.:
   {"serial":"XXX.XXX.XXXXXX","unix_time":...,"msi":5,"avt1":35.48,
@@ -133,8 +148,8 @@ class Config:
         except KeyError:
             raise SystemExit("config.ini: Abschnitt [device] fehlt")
         self.name = d.get("name", "Novolto Heatpump BETA")
-        self.instance_acload = d.getint("deviceinstance_acload", 40)
-        self.instance_temp = d.getint("deviceinstance_temperature", 41)
+        self.instance_acload = d.getint("deviceinstance_acload", 43)
+        self.instance_temp = d.getint("deviceinstance_temperature", 44)
         self.max_power = d.getint("max_power", 3000)
         self.step = max(1, d.getint("power_step", 20))
         self.timeout = d.getint("timeout_seconds", 120)
@@ -163,7 +178,7 @@ class Config:
         self.enable_temp2 = d.getboolean(
             "enable_temperature2_service", fallback=False)
         self.instance_temp2 = d.getint(
-            "deviceinstance_temperature2", fallback=42)
+            "deviceinstance_temperature2", fallback=45)
 
 
 class EnergyCounter:
@@ -245,7 +260,7 @@ class NovoltoDriver:
         self.svc = s
 
         s.add_path("/Mgmt/ProcessName", "heatpump-novolto")
-        s.add_path("/Mgmt/ProcessVersion", "0.1.0-beta")
+        s.add_path("/Mgmt/ProcessVersion", "1.0.0-beta")
         s.add_path("/Mgmt/Connection", "MQTT %s:%d" % (cfg.host, cfg.port))
         s.add_path("/DeviceInstance", cfg.instance_acload)
         s.add_path("/ProductId", 0xFFFF)
@@ -358,7 +373,7 @@ class NovoltoDriver:
         if cfg.enable_temp:
             t = make_service("com.victronenergy.temperature.novolto")
             t.add_path("/Mgmt/ProcessName", "heatpump-novolto")
-            t.add_path("/Mgmt/ProcessVersion", "0.1.0-beta")
+            t.add_path("/Mgmt/ProcessVersion", "1.0.0-beta")
             t.add_path("/Mgmt/Connection", "MQTT %s:%d" % (cfg.host, cfg.port))
             t.add_path("/DeviceInstance", cfg.instance_temp)
             t.add_path("/ProductId", 0xFFFF)
@@ -380,7 +395,7 @@ class NovoltoDriver:
         if cfg.enable_temp2:
             t2 = make_service("com.victronenergy.temperature.novolto2")
             t2.add_path("/Mgmt/ProcessName", "heatpump-novolto")
-            t2.add_path("/Mgmt/ProcessVersion", "0.1.0-beta")
+            t2.add_path("/Mgmt/ProcessVersion", "1.0.0-beta")
             t2.add_path("/Mgmt/Connection",
                         "MQTT %s:%d" % (cfg.host, cfg.port))
             t2.add_path("/DeviceInstance", cfg.instance_temp2)
