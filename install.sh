@@ -1,6 +1,6 @@
 #!/bin/sh
 # Installation von heatpump-novolto auf Venus OS (als root auf dem GX)
-# EXPERIMENTELL -- braucht Venus OS BETA mit com.victronenergy.heatpump.
+# Braucht Venus OS BETA mit com.victronenergy.heatpump-Unterstuetzung.
 # Eigener Pfad/Servicename, laeuft parallel zur stabilen dbus-novolto-
 # Installation, ohne diese zu beeinflussen.
 set -e

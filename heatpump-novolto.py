@@ -2,11 +2,13 @@
 """
 heatpump-novolto v1.0.0-beta
 =============================
-EXPERIMENTELLER Fork von dbus-novolto (siehe dort fuer die stabile
-Version). Registriert den Novolto als com.victronenergy.heatpump.novolto
-statt com.victronenergy.acload.novolto -- der native "Heatpump"-
-Geraetetyp, den Venus OS seit ca. V3.80-Beta kennt (Pendant zu
-com.victronenergy.evcharger fuer Wallboxen wie den Warp3).
+Getesteter, stabil laufender Fork von dbus-novolto (siehe dort fuer die
+stabile Version). Registriert den Novolto als
+com.victronenergy.heatpump.novolto statt com.victronenergy.acload.novolto
+-- der native "Heatpump"-Geraetetyp, den Venus OS seit ca. V3.80-Beta
+kennt (Pendant zu com.victronenergy.evcharger fuer Wallboxen wie den
+Warp3). Die Einschraenkung liegt nicht am Code hier, sondern an Victrons
+eigener, noch nicht finalisierter Schnittstelle (siehe naechster Absatz).
 
 Das "-beta"-Suffix bleibt bestehen, solange Venus OS selbst den
 Geraetetyp als "under development" fuehrt -- 1.0.0 heisst hier "erster
@@ -272,7 +274,7 @@ class NovoltoDriver:
         s.add_path("/Ac/Energy/Forward", round(self.energy.kwh, 3),
                    gettextcallback=self._fmt("%.2f kWh"))
 
-        # -------- native Heatpump-Pfade (experimentell, Venus OS Beta) --
+        # -------- native Heatpump-Pfade (Venus OS Beta noetig) --
         # /State-Enum ist bei Victron noch nicht final (Stand: dbus-Wiki
         # "under development") -- 0/1 ist geraten, analog zur bisherigen
         # avp-Schwelle. Anpassen, sobald Victron das Enum festlegt.

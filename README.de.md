@@ -1,24 +1,28 @@
-# heatpump-novolto (experimentell)
+# heatpump-novolto
 
 *[English version](README.md)*
 
-**Fork von [dbus-novolto](https://github.com/losnoxos/dbus-novolto).** Testet den
-nativen `com.victronenergy.heatpump`-Gerätetyp, den Venus OS seit ca.
-V3.80-Beta kennt — das Pendant zu `com.victronenergy.evcharger` für
-Wallboxen (z.B. Warp3).
+**Getesteter, stabil laufender Fork von [dbus-novolto](https://github.com/losnoxos/dbus-novolto).**
+Registriert den Novolto als nativen `com.victronenergy.heatpump`-
+Gerätetyp, den Venus OS seit ca. V3.80-Beta kennt — das Pendant zu
+`com.victronenergy.evcharger` für Wallboxen (z.B. Warp3).
 
-**Braucht Venus OS BETA** mit Heatpump-Unterstützung. Auf stabilem
-Venus OS zeigt sich vermutlich kein Unterschied zur bisherigen
-`acload`-Variante, da die GUI dort den neuen Typ (noch) nicht kennt.
+**Braucht Venus OS BETA** mit Heatpump-Unterstützung — das ist die eine
+harte Voraussetzung. Auf stabilem Venus OS zeigt sich vermutlich kein
+Unterschied zur bisherigen `acload`-Variante, da die GUI dort den neuen
+Typ (noch) nicht kennt.
 
 ## Warum ein eigenes Repo statt einer neuen Version von dbus-novolto?
 
-Victron selbst bezeichnet den Heatpump-Gerätetyp im
-[dbus-Wiki](https://github.com/victronenergy/venus/wiki/dbus) als
-**"under development"** — insbesondere das `/State`-Enum ist noch nicht
+Nicht weil der Code hier weniger zuverlässig wäre — er ist getestet und
+läuft genauso wie dbus-novolto. Der Grund liegt bei Victron: Sie
+bezeichnen den Heatpump-Gerätetyp in ihrem eigenen
+[dbus-Wiki](https://github.com/victronenergy/venus/wiki/dbus) noch als
+**"under development"**, insbesondere ist das `/State`-Enum noch nicht
 final festgelegt. dbus-novolto (die stabile Version) bleibt unverändert
-für alle nutzbar; dieser Fork ist zum Testen/Vergleichen und kann sich
-jederzeit wieder ändern, sobald Victron die Schnittstelle finalisiert.
+für alle nutzbar; dieser Fork bildet Victrons kommende Schnittstelle
+nach und wird vermutlich kleine Anpassungen brauchen, sobald sie
+finalisiert ist.
 
 ## Was ist anders als in dbus-novolto?
 

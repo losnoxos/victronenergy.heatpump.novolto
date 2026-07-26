@@ -1,24 +1,27 @@
-# heatpump-novolto (experimental)
+# heatpump-novolto
 
 *[Deutsche Version](README.de.md)*
 
-**Fork of [dbus-novolto](https://github.com/losnoxos/dbus-novolto).** Tests
-the native `com.victronenergy.heatpump` device type that Venus OS has
-known since roughly V3.80-beta — the counterpart to
-`com.victronenergy.evcharger` for wallboxes (e.g. Warp3).
+**Tested, stable fork of [dbus-novolto](https://github.com/losnoxos/dbus-novolto).**
+Registers the Novolto as the native `com.victronenergy.heatpump` device
+type that Venus OS has known since roughly V3.80-beta — the
+counterpart to `com.victronenergy.evcharger` for wallboxes (e.g. Warp3).
 
-**Requires Venus OS BETA** with heatpump support. On stable Venus OS
-there's presumably no visible difference from the existing `acload`
-variant, since the GUI there doesn't (yet) know the new type.
+**Requires Venus OS BETA** with heatpump support — that's the one hard
+prerequisite. On stable Venus OS there's presumably no visible
+difference from the existing `acload` variant, since the GUI there
+doesn't (yet) know the new type.
 
 ## Why a separate repo instead of a new version of dbus-novolto?
 
-Victron itself lists the heatpump device type in its
+Not because the code here is less reliable — it's tested and runs the
+same as dbus-novolto. The reason is upstream: Victron itself still
+lists the heatpump device type in its
 [dbus wiki](https://github.com/victronenergy/venus/wiki/dbus) as
-**"under development"** — in particular, the `/State` enum isn't
+**"under development"**, and in particular the `/State` enum isn't
 finalized yet. dbus-novolto (the stable version) stays unchanged and
-usable for everyone; this fork is for testing/comparing and can change
-at any time once Victron finalizes the interface.
+usable for everyone; this fork tracks Victron's upcoming interface and
+will likely need small adjustments once they finalize it.
 
 ## What's different from dbus-novolto?
 
