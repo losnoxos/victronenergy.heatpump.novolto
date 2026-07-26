@@ -1,7 +1,7 @@
 # Novolto MQTT-Protokoll (Referenz)
 
 Zusammenfassung der offiziellen Novolto-MQTT-Doku, ergänzt um die konkrete
-Nutzung in [dbus-novolto.py](dbus-novolto.py). Dient als Nachschlagewerk,
+Nutzung in [heatpump-novolto.py](heatpump-novolto.py). Dient als Nachschlagewerk,
 falls weitere Felder/Einstellungen angebunden werden sollen.
 
 ## Info-Telegramm (`<base_topic>/<topic_info>`, Standard `info`)
@@ -52,7 +52,7 @@ Statusfeld.
 **Wichtig zu `wel`:** Der Wert wird laut Hersteller seit dem letzten Geräte-Neustart
 integriert und ist ein Schätzwert — er springt bei einem Reboot des Novolto auf 0
 zurück und ist nicht persistent. Der Standard `energy_source = integrate`
-(eigene Integration aus `avp`, persistiert nach `/data/dbus-novolto/energy.json`)
+(eigene Integration aus `avp`, persistiert nach `/data/heatpump-novolto/energy.json`)
 ist deshalb die belastbarere Wahl; `wel` eignet sich höchstens zum Abgleich.
 
 ### Status-Bitflags (`st`)

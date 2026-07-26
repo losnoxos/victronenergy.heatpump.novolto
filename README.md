@@ -1,4 +1,4 @@
-# dbus-novolto-heatpump (experimentell)
+# heatpump-novolto (experimentell)
 
 **Fork von [dbus-novolto](https://github.com/losnoxos/dbus-novolto).** Testet den
 nativen `com.victronenergy.heatpump`-Gerätetyp, den Venus OS seit ca.
@@ -32,8 +32,8 @@ jederzeit wieder ändern, sobald Victron die Schnittstelle finalisiert.
   - `/State` — **provisorisch geraten** (0=aus/1=an, aus derselben
     `avp`-Schwelle wie die bisherige Ein/Aus-Anzeige), da Victron das
     Enum noch nicht definiert hat
-- Eigener Installationspfad (`/data/dbus-novolto-heatpump`,
-  `/service/dbus-novolto-heatpump`) — läuft parallel zur stabilen
+- Eigener Installationspfad (`/data/heatpump-novolto`,
+  `/service/heatpump-novolto`) — läuft parallel zur stabilen
   Installation, ohne diese zu stören. Beide gleichzeitig zu betreiben
   (auf unterschiedlichen `deviceinstance_*`-Werten in der jeweiligen
   `config.ini`) funktioniert zum direkten Vergleich.
@@ -45,10 +45,10 @@ jederzeit wieder ändern, sobald Victron die Schnittstelle finalisiert.
 3. `config.ini` aus `config.ini.example` erstellen (gleiche Felder wie
    bei dbus-novolto — falls parallel zur stabilen Version betrieben,
    unbedingt eine andere `deviceinstance_acload` wählen).
-4. `sh /data/tmp/dbus-novolto-heatpump/install.sh`
+4. `sh /data/tmp/heatpump-novolto/install.sh`
 
-Neustart: `svc -t /service/dbus-novolto-heatpump`
-Log: `tail -f /var/log/dbus-novolto-heatpump/current | tai64nlocal`
+Neustart: `svc -t /service/heatpump-novolto`
+Log: `tail -f /var/log/heatpump-novolto/current | tai64nlocal`
 
 ## Was zu testen ist
 

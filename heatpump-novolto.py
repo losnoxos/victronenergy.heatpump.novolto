@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-dbus-novolto-heatpump v0.1.0-beta
-==================================
+heatpump-novolto v0.1.0-beta
+=============================
 EXPERIMENTELLER Fork von dbus-novolto (siehe dort fuer die stabile
 Version). Registriert den Novolto als com.victronenergy.heatpump.novolto
 statt com.victronenergy.acload.novolto -- der native "Heatpump"-
@@ -77,12 +77,12 @@ except ImportError:
         "  opkg update && opkg install python3-paho-mqtt\n")
     sys.exit(1)
 
-log = logging.getLogger("dbus-novolto-heatpump")
+log = logging.getLogger("heatpump-novolto")
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 # Eigenes Datenverzeichnis, damit dieser Beta-Fork parallel zur
 # stabilen dbus-novolto-Installation laufen kann (z.B. zum Vergleichen).
-DATA_DIR = "/data/dbus-novolto-heatpump"
+DATA_DIR = "/data/heatpump-novolto"
 ENERGY_FILE = os.path.join(DATA_DIR, "energy.json")
 
 TYPE_TOGGLE = 1
@@ -234,7 +234,7 @@ class NovoltoDriver:
         s = make_service("com.victronenergy.heatpump.novolto")
         self.svc = s
 
-        s.add_path("/Mgmt/ProcessName", "dbus-novolto-heatpump")
+        s.add_path("/Mgmt/ProcessName", "heatpump-novolto")
         s.add_path("/Mgmt/ProcessVersion", "0.1.0-beta")
         s.add_path("/Mgmt/Connection", "MQTT %s:%d" % (cfg.host, cfg.port))
         s.add_path("/DeviceInstance", cfg.instance_acload)
@@ -347,7 +347,7 @@ class NovoltoDriver:
         self.tsvc = None
         if cfg.enable_temp:
             t = make_service("com.victronenergy.temperature.novolto")
-            t.add_path("/Mgmt/ProcessName", "dbus-novolto")
+            t.add_path("/Mgmt/ProcessName", "heatpump-novolto")
             t.add_path("/Mgmt/ProcessVersion", "0.1.0-beta")
             t.add_path("/Mgmt/Connection", "MQTT %s:%d" % (cfg.host, cfg.port))
             t.add_path("/DeviceInstance", cfg.instance_temp)
@@ -369,7 +369,7 @@ class NovoltoDriver:
         self.t2svc = None
         if cfg.enable_temp2:
             t2 = make_service("com.victronenergy.temperature.novolto2")
-            t2.add_path("/Mgmt/ProcessName", "dbus-novolto")
+            t2.add_path("/Mgmt/ProcessName", "heatpump-novolto")
             t2.add_path("/Mgmt/ProcessVersion", "0.1.0-beta")
             t2.add_path("/Mgmt/Connection",
                         "MQTT %s:%d" % (cfg.host, cfg.port))
@@ -457,9 +457,9 @@ class NovoltoDriver:
         # beiden Verbindungen raus (MQTT erlaubt keine doppelte Client-ID).
         try:
             client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2,
-                                 client_id="dbus-novolto-heatpump")
+                                 client_id="heatpump-novolto")
         except AttributeError:
-            client = mqtt.Client(client_id="dbus-novolto-heatpump")
+            client = mqtt.Client(client_id="heatpump-novolto")
         if cfg.user:
             client.username_pw_set(cfg.user, cfg.password)
         client.on_connect = self._on_connect
@@ -654,7 +654,7 @@ def main():
     cfg = Config(os.path.join(HERE, "config.ini"))
     DBusGMainLoop(set_as_default=True)
     driver = NovoltoDriver(cfg)
-    log.info("dbus-novolto gestartet, base_topic=%s", cfg.base)
+    log.info("heatpump-novolto gestartet, base_topic=%s", cfg.base)
     mainloop = GLib.MainLoop()
     # SIGTERM (daemontools "svc -d"/-t, Reboot) terminiert Python sonst
     # sofort ohne finally -- dadurch ginge der Energiezaehler-Puffer
