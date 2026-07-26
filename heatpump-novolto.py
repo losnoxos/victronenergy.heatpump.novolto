@@ -209,6 +209,7 @@ class NovoltoDriver:
         self.cfg = cfg
         self.energy = EnergyCounter()
         self.last_msg = 0.0
+        self._connected = True
         self.heating = False
         self.setpoint = 0
         self._last_name_temp = None
@@ -525,6 +526,9 @@ class NovoltoDriver:
         self.last_msg = time.monotonic()
         s = self.svc
         s["/Connected"] = 1
+        if not self._connected:
+            self._connected = True
+            log.info("Novolto sendet wieder Daten")
 
         power = d.get("avp")
         if power is not None:
@@ -605,6 +609,10 @@ class NovoltoDriver:
     def _watchdog(self):
         if self.last_msg and \
            time.monotonic() - self.last_msg > self.cfg.timeout:
+            if self._connected:
+                self._connected = False
+                log.warning("Keine Daten vom Novolto seit %d s "
+                            "(Geraet aus/getrennt?)", self.cfg.timeout)
             s = self.svc
             s["/Connected"] = 0
             s["/Ac/Power"] = None
