@@ -123,7 +123,7 @@ class Config:
             d = cp["device"]
         except KeyError:
             raise SystemExit("config.ini: Abschnitt [device] fehlt")
-        self.name = d.get("name", "Novolto Heizstab")
+        self.name = d.get("name", "Novolto Heatpump BETA")
         self.instance_acload = d.getint("deviceinstance_acload", 40)
         self.instance_temp = d.getint("deviceinstance_temperature", 41)
         self.max_power = d.getint("max_power", 3000)
@@ -274,7 +274,7 @@ class NovoltoDriver:
         s.add_path(p + "State", 0)
         s.add_path(p + "Settings/CustomName", "1 Heizstab Ein/Aus",
                    writeable=True)
-        s.add_path(p + "Settings/Group", "Novolto", writeable=True)
+        s.add_path(p + "Settings/Group", "Novolto Heatpump", writeable=True)
         s.add_path(p + "Settings/Type", TYPE_TOGGLE, writeable=True)
         s.add_path(p + "Settings/ValidTypes", 1 << TYPE_TOGGLE)
         s.add_path(p + "Settings/ShowUIControl", 1, writeable=True)
@@ -287,7 +287,7 @@ class NovoltoDriver:
                    onchangecallback=self._on_dimming_changed)
         s.add_path(p + "Settings/CustomName", "2 Heizstab Leistung",
                    writeable=True)
-        s.add_path(p + "Settings/Group", "Novolto", writeable=True)
+        s.add_path(p + "Settings/Group", "Novolto Heatpump", writeable=True)
         s.add_path(p + "Settings/Type", TYPE_NUMERIC_INPUT, writeable=True)
         s.add_path(p + "Settings/ValidTypes",
                    (1 << TYPE_NUMERIC_INPUT) | (1 << TYPE_BASIC_SLIDER))
@@ -307,7 +307,7 @@ class NovoltoDriver:
                        onchangecallback=self._on_sptw_changed)
             s.add_path(p + "Settings/CustomName", "3 Max. Wassertemperatur",
                        writeable=True)
-            s.add_path(p + "Settings/Group", "Novolto", writeable=True)
+            s.add_path(p + "Settings/Group", "Novolto Heatpump", writeable=True)
             s.add_path(p + "Settings/Type", TYPE_NUMERIC_INPUT,
                        writeable=True)
             s.add_path(p + "Settings/ValidTypes", 1 << TYPE_NUMERIC_INPUT)
@@ -327,7 +327,7 @@ class NovoltoDriver:
                        onchangecallback=self._on_sptwh_changed)
             s.add_path(p + "Settings/CustomName", "4 Hysterese Wassertemperatur",
                        writeable=True)
-            s.add_path(p + "Settings/Group", "Novolto", writeable=True)
+            s.add_path(p + "Settings/Group", "Novolto Heatpump", writeable=True)
             s.add_path(p + "Settings/Type", TYPE_NUMERIC_INPUT,
                        writeable=True)
             s.add_path(p + "Settings/ValidTypes", 1 << TYPE_NUMERIC_INPUT)

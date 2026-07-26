@@ -17,9 +17,9 @@ topic_control = control
 control_sensor_name = spp
 
 [device]
-name = Novolto Heizstab
-deviceinstance_acload = 40
-deviceinstance_temperature = 41
+name = Novolto Heatpump BETA
+deviceinstance_acload = 43
+deviceinstance_temperature = 44
 max_power = 3000
 power_step = 20
 timeout_seconds = 120
@@ -47,4 +47,4 @@ sptwh_min = 1
 sptwh_max = 20
 ; Zweiter Temperatursensor fuer avt1 (Elektronik-/Stabtemperatur)
 enable_temperature2_service = false
-deviceinstance_temperature2 = 42
+deviceinstance_temperature2 = 45
