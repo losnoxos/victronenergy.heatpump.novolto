@@ -40,11 +40,21 @@ jederzeit wieder ändern, sobald Victron die Schnittstelle finalisiert.
 
 ## Installation
 
+Am einfachsten per `deploy-to-cerbo.bat` (Windows): kopiert die Dateien,
+installiert und startet den Treiber neu — alles in einem Passwort-Login.
+Existiert lokal noch keine `config.ini`, holt sich das Skript beim
+ersten Lauf automatisch die Werte von der bestehenden stabilen
+`dbus-novolto`-Installation und passt `deviceinstance_*`/`name`
+automatisch an (43/44/45, "Novolto Heatpump BETA") — kein manuelles
+`nano`/`vi` mehr nötig. Ab dann liegt die `config.ini` lokal und wird
+bei jedem weiteren Deploy wiederverwendet.
+
+Manuell geht's auch:
+
 1. Venus OS Beta mit Heatpump-Unterstützung auf dem Cerbo installieren.
 2. Ordner auf den Cerbo kopieren, z.B. per scp nach `/data/tmp/`.
 3. `config.ini` aus `config.ini.example` erstellen (gleiche Felder wie
-   bei dbus-novolto — falls parallel zur stabilen Version betrieben,
-   unbedingt eine andere `deviceinstance_acload` wählen).
+   bei dbus-novolto, aber eigene `deviceinstance_*`-Werte).
 4. `sh /data/tmp/heatpump-novolto/install.sh`
 
 Neustart: `svc -t /service/heatpump-novolto`
