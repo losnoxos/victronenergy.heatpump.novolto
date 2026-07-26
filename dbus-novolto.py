@@ -452,11 +452,14 @@ class NovoltoDriver:
     # ------------------------------------------------------------------ mqtt
     def _init_mqtt(self):
         cfg = self.cfg
+        # Eigene Client-ID, sonst wirft der Broker bei parallelem Betrieb
+        # mit der stabilen dbus-novolto-Installation staendig eine der
+        # beiden Verbindungen raus (MQTT erlaubt keine doppelte Client-ID).
         try:
             client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2,
-                                 client_id="dbus-novolto")
+                                 client_id="dbus-novolto-heatpump")
         except AttributeError:
-            client = mqtt.Client(client_id="dbus-novolto")
+            client = mqtt.Client(client_id="dbus-novolto-heatpump")
         if cfg.user:
             client.username_pw_set(cfg.user, cfg.password)
         client.on_connect = self._on_connect
