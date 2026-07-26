@@ -1,111 +1,116 @@
-# heatpump-novolto (experimentell)
+# heatpump-novolto (experimental)
 
-**Fork von [dbus-novolto](https://github.com/losnoxos/dbus-novolto).** Testet den
-nativen `com.victronenergy.heatpump`-Gerätetyp, den Venus OS seit ca.
-V3.80-Beta kennt — das Pendant zu `com.victronenergy.evcharger` für
-Wallboxen (z.B. Warp3).
+*[Deutsche Version](README.de.md)*
 
-**Braucht Venus OS BETA** mit Heatpump-Unterstützung. Auf stabilem
-Venus OS zeigt sich vermutlich kein Unterschied zur bisherigen
-`acload`-Variante, da die GUI dort den neuen Typ (noch) nicht kennt.
+**Fork of [dbus-novolto](https://github.com/losnoxos/dbus-novolto).** Tests
+the native `com.victronenergy.heatpump` device type that Venus OS has
+known since roughly V3.80-beta — the counterpart to
+`com.victronenergy.evcharger` for wallboxes (e.g. Warp3).
 
-## Warum ein eigenes Repo statt einer neuen Version von dbus-novolto?
+**Requires Venus OS BETA** with heatpump support. On stable Venus OS
+there's presumably no visible difference from the existing `acload`
+variant, since the GUI there doesn't (yet) know the new type.
 
-Victron selbst bezeichnet den Heatpump-Gerätetyp im
-[dbus-Wiki](https://github.com/victronenergy/venus/wiki/dbus) als
-**"under development"** — insbesondere das `/State`-Enum ist noch nicht
-final festgelegt. dbus-novolto (die stabile Version) bleibt unverändert
-für alle nutzbar; dieser Fork ist zum Testen/Vergleichen und kann sich
-jederzeit wieder ändern, sobald Victron die Schnittstelle finalisiert.
+## Why a separate repo instead of a new version of dbus-novolto?
 
-## Was ist anders als in dbus-novolto?
+Victron itself lists the heatpump device type in its
+[dbus wiki](https://github.com/victronenergy/venus/wiki/dbus) as
+**"under development"** — in particular, the `/State` enum isn't
+finalized yet. dbus-novolto (the stable version) stays unchanged and
+usable for everyone; this fork is for testing/comparing and can change
+at any time once Victron finalizes the interface.
 
-- Registriert sich als `com.victronenergy.heatpump.novolto` statt
+## What's different from dbus-novolto?
+
+- Registers as `com.victronenergy.heatpump.novolto` instead of
   `com.victronenergy.acload.novolto`
-- Zusätzlich zu allen bisherigen Switch-Pane-Feldern (Ein/Aus-Status,
-  Leistung, Max. Temperatur, Hysterese — unverändert, nichts geht
-  verloren) werden die nativen Heatpump-Pfade befüllt:
-  - `/Temperature` (aus `avtw`)
-  - `/TargetTemperature` (schreibbar, synchron mit dem Max.-Temperatur-Feld,
-    publiziert `sptw` genau wie bisher)
-  - `/Ac/Power`, `/Ac/Energy/Forward`, `/Position` (wie bisher)
-  - `/State` — **provisorisch geraten** (0=aus/1=an, aus derselben
-    `avp`-Schwelle wie die bisherige Ein/Aus-Anzeige), da Victron das
-    Enum noch nicht definiert hat
-- Eigener Installationspfad (`/data/heatpump-novolto`,
-  `/service/heatpump-novolto`) — läuft parallel zur stabilen
-  Installation, ohne diese zu stören. Beide gleichzeitig zu betreiben
-  (auf unterschiedlichen `deviceinstance_*`-Werten in der jeweiligen
-  `config.ini`) funktioniert zum direkten Vergleich.
+- In addition to all the existing Switch Pane fields (Ein/Aus status,
+  power, max. temperature, hysteresis — unchanged, nothing is lost),
+  the native heatpump paths are populated:
+  - `/Temperature` (from `avtw`)
+  - `/TargetTemperature` (writable, kept in sync with the
+    max.-temperature field, publishes `sptw` exactly as before)
+  - `/Ac/Power`, `/Ac/Energy/Forward`, `/Position` (as before)
+  - `/State` — **provisional guess** (0=off/1=on, from the same `avp`
+    threshold as the existing Ein/Aus status), since Victron hasn't
+    defined the enum yet
+- Own installation path (`/data/heatpump-novolto`,
+  `/service/heatpump-novolto`) — runs alongside the stable
+  installation without disturbing it. Running both at the same time
+  (with different `deviceinstance_*` values in each `config.ini`)
+  works fine for direct comparison.
 
 ## Installation
 
-Am einfachsten per `deploy-to-cerbo.bat` (Windows, nicht Teil des
-Repos — siehe [Hinweis zu lokalen Dateien](#hinweis-zu-lokalen-dateien)
-unten): kopiert die Dateien, installiert und startet den Treiber neu —
-alles in einem Passwort-Login. Existiert lokal noch keine `config.ini`,
-holt sich das Skript beim ersten Lauf automatisch die Werte von der
-bestehenden stabilen `dbus-novolto`-Installation und passt
-`deviceinstance_*`/`name` automatisch an (43/44/45, "Novolto Heatpump
-BETA") — kein manuelles `nano`/`vi` mehr nötig. Ab dann liegt die
-`config.ini` lokal und wird bei jedem weiteren Deploy wiederverwendet.
+Easiest via `deploy-to-cerbo.bat` (Windows, not part of the repo — see
+[note on local files](#note-on-local-files) below): copies the files,
+installs, and restarts the driver — all in one password login. If
+there's no local `config.ini` yet, the script automatically fetches
+the values from the existing stable `dbus-novolto` installation on its
+first run and adjusts `deviceinstance_*`/`name` accordingly (43/44/45,
+"Novolto Heatpump BETA") — no manual `nano`/`vi` needed. From then on,
+`config.ini` lives locally and gets reused on every further deploy.
 
-Manuell geht's auch:
+Manual installation also works:
 
-1. Venus OS Beta mit Heatpump-Unterstützung auf dem Cerbo installieren.
-2. Ordner auf den Cerbo kopieren, z.B. per scp nach `/data/tmp/`.
-3. `config.ini` aus `config.ini.example` erstellen (gleiche Felder wie
-   bei dbus-novolto, aber eigene `deviceinstance_*`-Werte).
+1. Install Venus OS beta with heatpump support on the Cerbo.
+2. Copy the folder to the Cerbo, e.g. via scp to `/data/tmp/`.
+3. Create `config.ini` from `config.ini.example` (same fields as
+   dbus-novolto, but with your own `deviceinstance_*` values).
 4. `sh /data/tmp/heatpump-novolto/install.sh`
 
-Neustart: `svc -t /service/heatpump-novolto`
+Restart: `svc -t /service/heatpump-novolto`
 Log: `tail -f /var/log/heatpump-novolto/current | tai64nlocal`
-Deinstallieren: `sh /data/heatpump-novolto/uninstall.sh` (entfernt
-Service, rc.local-Eintrag und `/data/heatpump-novolto` restlos; rührt
-die stabile `dbus-novolto`-Installation nicht an)
+Uninstall: `sh /data/heatpump-novolto/uninstall.sh` (removes the
+service, the rc.local entry, and `/data/heatpump-novolto` entirely;
+doesn't touch the stable `dbus-novolto` installation)
 
-## Ergebnisse bisheriger Tests
+## Test results so far
 
-- **Kein eigenes GUI-Icon/Kachel**, anders als beim Wallbox-Typ
-  (`evcharger`, z.B. Warp3). Der Heatpump-Eintrag taucht auf der
-  aktuell getesteten Beta-Version nur generisch in der Geräteliste
-  unter "AC-Lasten" auf, technisch korrekt benannt, aber ohne
-  besondere Darstellung. Deckt sich mit "under development" im
-  Victron-Wiki.
-- **Switch Pane-Gruppe und Gerätename müssen sich vom stabilen Repo
-  unterscheiden**, sonst mischt Venus OS die Switch-Pane-Controls
-  beider Services optisch in eine Gruppe (gruppiert global nach dem
-  `Settings/Group`-String, nicht pro Service). Deshalb hier
-  `"Novolto Heatpump"` statt `"Novolto"` und `"Novolto Heatpump BETA"`
-  statt `"Novolto Heizstab"` als Default-Name.
-- Ansonsten funktioniert der native Teil technisch wie erwartet:
-  `/Temperature`, `/TargetTemperature`, `/Ac/Power` etc. syncen
-  korrekt, sobald `config.ini` stimmt.
+- **No dedicated GUI icon/tile**, unlike the wallbox type
+  (`evcharger`, e.g. Warp3). On the beta version tested, the heatpump
+  entry just shows up generically in the device list under "AC
+  Loads", correctly named but without any special treatment. Matches
+  the "under development" status in the Victron wiki.
+- **Switch Pane group and device name must differ from the stable
+  repo**, otherwise Venus OS visually mixes the Switch Pane controls
+  of both services into one group (it groups globally by the
+  `Settings/Group` string, not per service). Hence `"Novolto
+  Heatpump"` instead of `"Novolto"`, and `"Novolto Heatpump BETA"`
+  instead of `"Novolto Heizstab"` as the default name.
+- Otherwise the native part works technically as expected:
+  `/Temperature`, `/TargetTemperature`, `/Ac/Power` etc. sync
+  correctly once `config.ini` is right.
 
-## Noch offen
+## Still open
 
-- Lässt sich `/TargetTemperature` über ein natives GUI-Element setzen
-  (nicht nur über das bisherige Switch-Pane-Feld)? Aktuell gibt es
-  dafür keine GUI, die das anders anzeigen würde als eine Zahl.
-- Zeigt VRM das Gerät korrekt als Heatpump-Verbrauch an (im Forum gab
-  es dazu noch offene Bugs, Stand der Recherche für dieses Repo)?
-- Wie reagiert eine künftige GUI-Version auf das geratene `/State`
-  (0/1), sobald Victron das Enum final definiert?
+- Can `/TargetTemperature` be set via a native GUI element (not just
+  the existing Switch Pane field)? Currently there's no GUI that
+  would display it any differently from a plain number.
+- Does VRM show the device correctly as heatpump consumption (the
+  forum had open bugs about this, as of the research done for this
+  repo)?
+- How will a future GUI version react to the guessed `/State` (0/1)
+  once Victron finalizes the enum?
 
-Rückmeldungen dazu bitte im Projekt vermerken — die Ergebnisse fließen
-zurück in die Entscheidung, ob/wann eine echte Migration von
-dbus-novolto sinnvoll ist.
+Please note any findings in the project — the results feed back into
+the decision on whether/when a real migration of dbus-novolto makes
+sense.
 
-## Hinweis zu lokalen Dateien
+## Note on local files
 
-`config.ini` und `deploy-to-cerbo.bat` sind absichtlich nicht Teil
-dieses Repos (`.gitignore`) — sie enthalten echte Zugangsdaten bzw.
-eine private LAN-IP. `config.ini.example` dient als Vorlage.
+`config.ini` and `deploy-to-cerbo.bat` are deliberately not part of
+this repo (`.gitignore`) — they contain real credentials and a private
+LAN IP, respectively. `config.ini.example` serves as a template.
 
-## Protokoll-Referenz
+## Protocol reference
 
-Identisch zu dbus-novolto, siehe [NOVOLTO-MQTT.md](NOVOLTO-MQTT.md).
+See [NOVOLTO-MQTT.md](NOVOLTO-MQTT.md).
 
-## Lizenz
+## Changelog
 
-MIT, siehe [LICENSE](LICENSE).
+See [CHANGELOG.md](CHANGELOG.md).
+
+## License
+
+MIT, see [LICENSE](LICENSE).
